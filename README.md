@@ -1,84 +1,84 @@
 # 🔍 Code Analyzer FastAPI
 
-מערכת מבוססת FastAPI המאפשרת ניתוח קוד סטטי של קבצי תכנות (Python, JavaScript, TypeScript, Java, ועוד) ומציגה אזהרות גרפיות וטקסטואליות בנוגע לבעיות נפוצות בקוד.
+A FastAPI-based system for static code analysis of various programming languages (Python, JavaScript, TypeScript, Java, etc.), providing both textual and graphical warnings about common issues in code.
 
 ---
 
-## 🚀 סקירה כללית
+## 🚀 Overview
 
-פרויקט זה מספק שירותי ניתוח סטטי לקבצי קוד שמועלים לשרת, ובודק עבורם:
+This project offers real-time static analysis of uploaded code files, checking for:
 
-- פונקציות ארוכות מדי
-- קבצים עם יותר מדי שורות
-- משתנים שלא נעשה בהם שימוש
-- פונקציות ללא docstring
+- Overly long functions
+- Files with too many lines
+- Unused variables
+- Missing function docstrings
 
-בנוסף, המערכת יוצרת גרפים סטטיסטיים להצגת נתוני האזהרות:
+Additionally, it generates charts and visualizations such as:
 
-- היסטוגרמת אורכי פונקציות
-- גרף עוגה לפי סוגי הבעיות
-- גרף עמודות המשווה את מספר הבעיות בין קבצים
+- Function length histograms
+- Pie charts of issue types
+- Bar charts comparing issues across files
 
 ---
 
-## ⚙️ הוראות התקנה וביצוע
+## ⚙️ Installation & Usage
 
-1. **העתקת הפרויקט**:
+1. **Clone the project**:
    ```bash
    git clone <repository-url>
    cd <project-folder>
    ```
 
-2. **התקנת סביבת עבודה** (מומלץ):
+2. **Create a virtual environment** (recommended):
    ```bash
    python -m venv venv
-   source venv/bin/activate        # ב-Windows: venv\Scripts\activate
+   source venv/bin/activate        # On Windows: venv\Scripts\activate
    ```
 
-3. **התקנת התלויות**:
+3. **Install dependencies**:
    ```bash
    pip install fastapi uvicorn matplotlib
    ```
 
-4. **הרצת השרת**:
+4. **Run the server**:
    ```bash
    uvicorn main:app --reload
    ```
 
-5. **בדיקת המערכת**:
-   פתח דפדפן וגש לכתובת:
+5. **Access the API documentation**:
+   Open your browser and navigate to:
    ```
    http://localhost:8000/docs
    ```
 
 ---
 
-## 📁 מבנה תיקיות
+## 📁 Project Structure
 
 ```
 project/
 │
-├── main.py              # קובץ FastAPI הראשי עם הנתיבים /alerts ו-/analyze
-├── analyze.py           # פונקציות ליצירת גרפים והפקת אורכי פונקציות
-├── alerts.py            # פונקציות לזיהוי בעיות בקוד (אורך פונקציות, משתנים וכו')
-├── graphs/              # תיקייה לאחסון גרפים PNG שנוצרים
+├── main.py              # Main FastAPI file defining /alerts and /analyze endpoints
+├── analyze.py           # Chart generation and function length extraction
+├── alerts.py            # Code issue checks (function length, unused variables, etc.)
+├── graphs/              # Folder to store generated PNG charts
 │   └── *.png
-├── README.md            # קובץ תיעוד זה
-└── requirements.txt     # רשימת תלויות (לא חובה, ראה הערה למטה)
+├── README.md            # This documentation file
+└── requirements.txt     # Project dependencies (optional)
 ```
 
 ---
 
-## 🔌 הסבר על נקודות הקצה (Endpoints)
+## 🔌 API Endpoints
 
 ### 📍 POST `/alerts`
 
-מבצע ניתוח טקסטואלי של קבצים ומחזיר רשימת אזהרות עבור כל קובץ שהועלה.
+Performs textual analysis and returns warnings for each uploaded file.
 
-**קלט**:
-- רשימת קבצים (`multipart/form-data`)
+**Input**:
+- List of files (`multipart/form-data`)
 
-**פלט לדוגמה**:
+**Example output**:
 ```json
 [
   {
@@ -99,15 +99,15 @@ project/
 
 ### 📍 POST `/analyze`
 
-מבצע ניתוח גרפי ומחזיר:
-- גרף היסטוגרמה של אורכי פונקציות
-- גרף עוגה של סוגי בעיות
-- גרף עמודות של סך הבעיות בכל קובץ
+Performs graphical analysis and returns:
+- Function length histogram
+- Pie chart of issue types
+- Bar chart of total issues per file
 
-**קלט**:
-- רשימת קבצים (`multipart/form-data`)
+**Input**:
+- List of files (`multipart/form-data`)
 
-**פלט לדוגמה**:
+**Example output**:
 ```json
 {
   "files": [
@@ -123,9 +123,9 @@ project/
 
 ---
 
-## 🛠 דרישות ותלויות
+## 🛠 Requirements
 
-ניתן לרשום את תלויות הפרויקט בקובץ `requirements.txt`:
+You can list the project dependencies in a `requirements.txt` file:
 
 ```txt
 fastapi
@@ -133,26 +133,26 @@ uvicorn
 matplotlib
 ```
 
-להתקנתן:
+To install them:
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## 📝 הערות
+## 📝 Notes
 
-- הנתונים אינם נשמרים בבסיס נתונים — הכל מתבצע בזיכרון ובקבצים זמניים בתיקיית `graphs`.
-- סיומות קבצים נתמכות: `.py`, `.java`, `.js`, `.ts`, `.cpp`, `.c`
-- הקוד מתמקד בניתוח קבצי **Python** בשלב זה, אך יש לו התאמה חלקית לשפות אחרות לצורך סינון בסיסי.
-- כל גרף נוצר בקובץ `PNG` חדש עם שם ייחודי ומונגש דרך נתיב `/graphs/<filename>`.
-
----
-
-## 📧 יצירת קשר
-
-לשאלות או בעיות ניתן ליצור קשר עם מפתח/ת המערכת.
+- No database is used — data is processed in-memory and charts are saved as PNG files in the `graphs` directory.
+- Supported file extensions: `.py`, `.java`, `.js`, `.ts`, `.cpp`, `.c`
+- The current code mainly analyzes **Python** code, but includes basic keyword checks for other languages.
+- Each chart is saved as a unique PNG file and accessible via `/graphs/<filename>`.
 
 ---
 
-בהצלחה! 🚀
+## 📧 Contact
+
+For questions or issues, please contact the project maintainer.
+
+---
+
+Good luck! 🚀
